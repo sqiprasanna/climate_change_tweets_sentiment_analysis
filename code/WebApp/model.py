@@ -97,7 +97,7 @@ def sent_analysis(tweet: str) -> str:
     
     tweet = preprocess([tweet])
     if len(tweet) == 0:
-        return ["Invalid Input"]
+        return "Invalid Input"
     
     tweet = [" ".join(t) for t in tweet]
     return model.predict(tweet)

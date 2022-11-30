@@ -31,6 +31,21 @@ One challenge in preprocessing is deciding which words to omit, since certain wo
 The data will be segmented into train and test sets with an 80/20 split. We also plan on experimenting later on with cross-validation sets to prevent overfitting and make the best use of our dataset.
 In order to perform sentiment analysis, we need to use various classification algorithms. We are planning on conducting linear classification or logistic regression on the one-hot encoded vectors of the tweets as initial models. These algorithms will respectively output either binary classes (+1, -1) or a probability (using a threshold to determine output class). In addition, we will also attempt other classification algorithms including Support Vector Machines or Naive Bayes. The best algorithm will be chosen by comparing the accuracy, precision, and recall on their respective performances.
 
+### Steps to run the Web Application
+
+
+Install all the required packages for the Web Application using
+```
+pip install -r requirements.txt
+```
+
+Start the server by running
+```
+python3 -m flask --app index run
+```
+
+Server should be started at 127.0.0.1:5000
+
 ### Citations:
 
 
