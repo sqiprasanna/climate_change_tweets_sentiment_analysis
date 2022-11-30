@@ -10,7 +10,6 @@ app = Flask(__name__)
 @app.route("/", methods=['GET'])
 def index():
     return render_template("index.html")
-    # return "<p>Hello, World!</p>"
 
 
 @app.route('/sentiment', methods=['POST'])
@@ -18,8 +17,10 @@ def sentiment():
     print("Got a request")
     print(request.json)
     tweet = request.json['Tweet']
-    print(sent_analysis(tweet)[0])
+    res = sent_analysis(tweet)
+    print(res)
     return {
-        "Sentiment": sent_analysis(tweet)[0],
+        "Sentiment": res[0],
+        "Message": res,
     }
-    # return getResult(data, time)
+   

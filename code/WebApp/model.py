@@ -17,8 +17,8 @@ from sklearn.pipeline import make_pipeline
 from sklearn.metrics import confusion_matrix, accuracy_score
 from nltk.stem import PorterStemmer
 import spacy
-import enchant
 import re
+from spellchecker import SpellChecker
 
 #Loading model to compare the results
 model = pickle.load(open('model.pkl','rb'))
@@ -43,6 +43,20 @@ def spacyPipeline(tweets):
 
 def preprocess(tweets):
 
+    spell = SpellChecker()
+    fixed_tweets = []
+    for tweet in tweets:
+        valid = False
+        for word in spell.split_words(tweet):
+            if word == spell.correction(word):
+                # Valid word
+                valid = True
+                break
+        if valid:
+            fixed_tweets.append(tweet)
+
+    tweets = fixed_tweets
+    
     whiteList=['climate','change','earth','global','warming','planet']
 
     #Remove mentions
@@ -73,15 +87,17 @@ def preprocess(tweets):
 
 def sent_analysis(tweet: str) -> str:
     
-    d = enchant.Dict("en_US")
+    # d = enchant.Dict("en_US")
     
-    for tw in tweet:
-        if(d.check(tw)):
-            return 
-        elif:
-            return 
-      tCount++;
-        
+    # for tw in tweet:
+    #     if not d.check(tw):
+    #         wcount=wcount+1 
+             
+    #     tCount=tCount+1;
+    
     tweet = preprocess([tweet])
+    if len(tweet) == 0:
+        return ["Invalid Input"]
+    
     tweet = [" ".join(t) for t in tweet]
     return model.predict(tweet)

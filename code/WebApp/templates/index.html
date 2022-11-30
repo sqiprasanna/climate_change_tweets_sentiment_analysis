@@ -116,9 +116,17 @@
                     if (data['Sentiment'] == "Yes") {
                         $("#PositiveDiv").show();
                         $("#NegativeDiv").hide();
-                    } else{
+                    } 
+                    else if (data['Sentiment'] == "No")
+                    {
                         $("#PositiveDiv").hide();
                         $("#NegativeDiv").show();
+                       
+                    }
+                    else{
+                        alert("Failed to analyze the tweet: " + data['Message']);
+                        // alert("Invalid input \"" + $("#TweetTextArea").val() + "\". Please try again!");
+                        $("#TweetTextArea").val("");
                     }
                 },
                 function(){
