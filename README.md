@@ -1,21 +1,20 @@
-# 257_ML_grp_13_project
+# climate_change_tweets_sentiment_analysis 
 ### Project Title: Sentiment Analysis on Climate Change Using Twitter Tweets
 
 ### Team Members:
-- John Lu (jfantab)
+- John Lu (jfantab) (JohnLuSJSU was the account I used to upload initial notebooks/pdf)
 - Sai Prasanna Kumar Kumaru (sqiprasanna)
 - Sai Vennela Garikapati (Gsaivennela7)
 
 ### Introduction:
 
 
-Climate change has become significant with the dramatic increases in opinions regarding this issue, which play a key role in policy-making. This study proposes a method to analyze the dynamic opinions in the tweets and classify them into two categories—positive and negative. This helps in identifying the users’ opinions on environmental change. The project mainly focuses on finding out what percentage of Twitter users believe that there is a change in the climate. Once the data is trained using a supervised model, current views on climate change will be obtained through the Twitter API, and we can compare how the users' opinions have changed over the years.
+The project’s objective is to find out what percentage of Twitter users believe climate change exists. The main task is to classify the tweets into two categories whilst also comparing the performance of several different classification algorithms. This is also a good project to learn how to conduct preprocessing for an NLP task. This project is significant since it is a useful way to gauge public opinion on this issue. 
 
 ### Dataset:
 
 
-Dataset link: https://data.world/xprizeai-env/sentiment-of-climate-change. 
-The tweets are collected using the Twitter API by searching for keywords or hashtags related to climate change or global warming [1]. The judgments (existence, categorical variable) and confidence scores (existence_confidence, percentages) are provided through a platform called CrowdFlower [1]. Humans were surveyed on whether they would classify the tweets as believing in climate change or not or unsure [1]. 
+The dataset is found from the link data.world/xprizeai-env/sentiment-of-climate-change and consists of 6,090 tweets in total about climate change or global warming [1]. The tweets are manually labeled by workers through the platform CrowdFlower [2]. The tweets are classified into three categories shown in the “existence” column: believing in climate change (yes), not believing in climate change (no), and not directly referencing climate change (null) [2]. The “existence_confidence” column shows the level of agreement for the judgment of that tweet and “the trust level of each of those workers” [2]. This third column will be ignored since we only care about the labels.
 
 ### Preprocessing:
 
@@ -45,13 +44,5 @@ python3 -m flask --app index run
 ```
 
 Server should be started at 127.0.0.1:5000
-
-### Citations:
-
-
-1. https://kbares.quora.com/Can-We-Figure-Out-If-Twitter-Users-Who-Discuss-Global-Warming-Believe-It-Is-Occurring 
-
-
-2. https://scikit-learn.org/stable/modules/generated/sklearn.decomposition.TruncatedSVD.html 
 
 
