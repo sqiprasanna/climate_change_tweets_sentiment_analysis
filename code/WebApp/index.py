@@ -18,9 +18,9 @@ def sentiment():
     print(request.json)
     tweet = request.json['Tweet']
     res = sent_analysis(tweet)
-    print(res)
+    print("Response",res)
     return {
         "Sentiment": res[0],
-        "Message": res,
+        "Message": res[0],
     }
    

@@ -1,45 +1,51 @@
 ### Model.py
 
-import pandas as pd
-from sklearn.linear_model import LinearRegression
 import pickle
-from sklearn.feature_extraction.text import CountVectorizer
-from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.model_selection import train_test_split
-import collections, numpy
-import numpy as np, pandas as pd
-import seaborn as sns
-import matplotlib.pyplot as plt
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.naive_bayes import MultinomialNB
 from sklearn.pipeline import make_pipeline
 from sklearn.metrics import confusion_matrix, accuracy_score
-from nltk.stem import PorterStemmer
 import spacy
 import re
 from spellchecker import SpellChecker
+from sklearn.feature_extraction.text import TfidfVectorizer
+# from /Users/saivennelagarikapati/Downloads/257_ML_grp_13_project/code/svg_balanced_SVD_class_code.ipynb import tf
 
 #Loading model to compare the results
 model = pickle.load(open('model.pkl','rb'))
+tf = pickle.load(open('tf.pkl','rb'))
 # print(model.predict(["global warm report urg govern belgium world face increas hunger"]))
 
+def checkWord(token):
+    negations = ['not', 'no']
+    fillers = ['link', 'http']
+    return (not token.is_stop) and (token.is_alpha) and (token.text not in fillers) and ((token.text in negations) or (len(token.text) > 3))
+
 def spacyPipeline(tweets):
-    ps = PorterStemmer()
     nlp = spacy.load('en_core_web_sm')
     
+    MIN_TWEET_LEN = 5
+    
+    indices = []
     preprocessed_tweets = []
-    for t in tweets:
+    for index, t in enumerate(tweets):
+        
         doc = nlp(t)
-        filtered_tweet = []
+        filtered_tweet = set()
         
         for token in doc:
-            if (not token.is_stop) and token.is_alpha:
-                filtered_tweet.append(ps.stem(str(token)))
+            # print(token, " | ", spacy.explain(token.pos_))
+            if (token.lemma_ not in filtered_tweet) and checkWord(token):
+                filtered_tweet.add(token.lemma_.lower())
         
-        preprocessed_tweets.append(filtered_tweet)
+        if len(filtered_tweet) >= MIN_TWEET_LEN:
+            print(filtered_tweet,"\n---\n")
+            preprocessed_tweets.append(filtered_tweet)
+            
     
     return preprocessed_tweets
+
+
 
 def preprocess(tweets):
 
@@ -50,10 +56,13 @@ def preprocess(tweets):
         for word in spell.split_words(tweet):
             if word == spell.correction(word):
                 # Valid word
+               
                 valid = True
                 break
         if valid:
             fixed_tweets.append(tweet)
+   
+
 
     tweets = fixed_tweets
     
@@ -72,9 +81,10 @@ def preprocess(tweets):
 
     #Convert all to lowercase
     tweets = [t.lower() for t in tweets]
-    
+    print(tweets)
     #Process tweets through spaCy pipeline
     tweets = spacyPipeline(tweets)
+    print(tweets)
     
     #Filter out words
     tweets = [list(filter(lambda w: w != 'link', t)) for t in tweets]
@@ -83,21 +93,18 @@ def preprocess(tweets):
     tweets = [list(filter(lambda w: len(w) > 2, t)) for t in tweets]
 
     # print(tweets)
+    # print("ADITYA")
     return tweets
 
 def sent_analysis(tweet: str) -> str:
     
-    # d = enchant.Dict("en_US")
-    
-    # for tw in tweet:
-    #     if not d.check(tw):
-    #         wcount=wcount+1 
-             
-    #     tCount=tCount+1;
     
     tweet = preprocess([tweet])
     if len(tweet) == 0:
-        return "Invalid Input"
+        return ["Invalid Input"]
     
-    tweet = [" ".join(t) for t in tweet]
-    return model.predict(tweet)
+    
+    tfidf_tweets = tf.transform([' '.join(t) for t in tweet])
+    #cos_sim_rf=cosine_similarity(tfidf_tweets, tfidf_tweets)
+    #print(cos_sim_rf)
+    return model.predict(tfidf_tweets)
